@@ -25,6 +25,18 @@ services:
       - POSTGRES_USER=app
       - POSTGRES_PASSWORD=pass
 
+  node:
+    image: "node"
+    user: "node"
+    working_dir: /home/node/app
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./gate-simulator:/home/node/app
+    expose:
+      - "8081"
+    command: "npm start"
+
 volumes:
   data_postgres:
     driver: local
