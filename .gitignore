@@ -5,6 +5,8 @@ node_modules
 target
 *.iml
 .gradle
+*.ibt
+binlog.*
 
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**
