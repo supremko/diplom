@@ -22,6 +22,7 @@ dependencies {
     testImplementation 'commons-dbutils:commons-dbutils:1.7'
     testImplementation 'com.github.javafaker:javafaker:1.0.1'
     testImplementation 'mysql:mysql-connector-java:8.0.18'
+    testImplementation 'org.postgresql:postgresql:42.2.9'
 }
 
 test {
