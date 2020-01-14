@@ -7,6 +7,8 @@ target
 .gradle
 *.ibt
 binlog.*
+data_mysql/
+build/
 
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**
