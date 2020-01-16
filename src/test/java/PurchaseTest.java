@@ -3,14 +3,13 @@ import com.github.javafaker.*;
 import lombok.*;
 import org.junit.jupiter.api.*;
 
-import java.io.IOException;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Locale;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.*;
 import static com.codeborne.selenide.Selenide.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PurchaseTest {
     private SelenideElement buyButton = $(byText("Купить"));
@@ -38,8 +37,6 @@ public class PurchaseTest {
             .$(withText("Поле обязательно для заполнения"));
     private SelenideElement cvcIncorrect = $$("[class=input__inner]").findBy(text("CVC/CVV"))
             .$(withText("Неверный формат"));
-    private static String user = "app";
-    private static String password = "pass";
     private String card1 = "4444 4444 4444 4441";
     private String card2 = "4444 4444 4444 4442";
     private String validMonth = "10";
@@ -49,147 +46,11 @@ public class PurchaseTest {
     private String link = "http://localhost:8080";
     private int countBefore;
     private int countAfter;
-    private static String mysql = "jdbc:mysql://localhost:3306/app";
-    private static String postgres = "jdbc:postgresql://localhost:5432/app";
-    //указать в какой базе данных производится проверка
-    private static String database = postgres;
 
-
-    static int countApprovedPayment() throws SQLException {
-        val count = "select count(1) from order_entity o, payment_entity p where o.payment_id=p.transaction_id and p.status='APPROVED';";
-        int countApprovedPayment = 0;
-        try (
-                val conn = DriverManager.getConnection(
-                        database, user, password
-                );
-                val countStmt = conn.createStatement();
-        ) {
-            try (val rs = countStmt.executeQuery(count)) {
-                while (rs.next()) {
-                    if (database == mysql) {
-                        countApprovedPayment = rs.getInt("count(1)");
-                    } else if (database == postgres) {
-                        countApprovedPayment = rs.getInt("count");
-                    }
-                }
-            }
-        }
-        return countApprovedPayment;
-    }
-
-    static int countDeclinedPayment() throws SQLException {
-        val count = "select count(1) from order_entity o, payment_entity p where o.payment_id=p.transaction_id and p.status='DECLINED';";
-        int countDeclinedPayment = 0;
-        try (
-                val conn = DriverManager.getConnection(
-                        database, user, password
-                );
-                val countStmt = conn.createStatement();
-        ) {
-            try (val rs = countStmt.executeQuery(count)) {
-                while (rs.next()) {
-                    if (database == mysql) {
-                        countDeclinedPayment = rs.getInt("count(1)");
-                    } else if (database == postgres) {
-                        countDeclinedPayment = rs.getInt("count");
-                    }
-                }
-            }
-        }
-        return countDeclinedPayment;
-    }
-
-    static int countPayment() throws SQLException {
-        val count = "select count(1) from order_entity o, payment_entity p where o.payment_id=p.transaction_id;";
-        int countPayment = 0;
-        try (
-                val conn = DriverManager.getConnection(
-                        database, user, password
-                );
-                val countStmt = conn.createStatement();
-        ) {
-            try (val rs = countStmt.executeQuery(count)) {
-                while (rs.next()) {
-                    if (database == mysql) {
-                        countPayment = rs.getInt("count(1)");
-                    } else if (database == postgres) {
-                        countPayment = rs.getInt("count");
-                    }
-                }
-            }
-        }
-        return countPayment;
-    }
-
-    static int countApprovedCredit() throws SQLException {
-        val count = "select count(1) from order_entity o, credit_request_entity c where o.payment_id=c.bank_id and c.status='APPROVED';";
-        int countApprovedCredit = 0;
-        try (
-                val conn = DriverManager.getConnection(
-                        database, user, password
-                );
-                val countStmt = conn.createStatement();
-        ) {
-            try (val rs = countStmt.executeQuery(count)) {
-                while (rs.next()) {
-                    if (database == mysql) {
-                        countApprovedCredit = rs.getInt("count(1)");
-                    } else if (database == postgres) {
-                        countApprovedCredit = rs.getInt("count");
-                    }
-                }
-            }
-        }
-        return countApprovedCredit;
-    }
-
-    static int countDeclinedCredit() throws SQLException {
-        val count = "select count(1) from order_entity o, credit_request_entity c where o.payment_id=c.bank_id and c.status='DECLINED';";
-        int countDeclinedCredit = 0;
-        try (
-                val conn = DriverManager.getConnection(
-                        database, user, password
-                );
-                val countStmt = conn.createStatement();
-        ) {
-            try (val rs = countStmt.executeQuery(count)) {
-                while (rs.next()) {
-                    if (database == mysql) {
-                        countDeclinedCredit = rs.getInt("count(1)");
-                    } else if (database == postgres) {
-                        countDeclinedCredit = rs.getInt("count");
-                    }
-                }
-            }
-        }
-        return countDeclinedCredit;
-    }
-
-    static int countCredit() throws SQLException {
-        val count = "select count(1) from order_entity o, credit_request_entity c where o.payment_id=c.bank_id;";
-        int countCredit = 0;
-        try (
-                val conn = DriverManager.getConnection(
-                        database, user, password
-                );
-                val countStmt = conn.createStatement();
-        ) {
-            try (val rs = countStmt.executeQuery(count)) {
-                while (rs.next()) {
-                    if (database == mysql) {
-                        countCredit = rs.getInt("count(1)");
-                    } else if (database == postgres) {
-                        countCredit = rs.getInt("count");
-                    }
-                }
-            }
-        }
-        return countCredit;
-    }
 
     @Test
-    void shouldReturnIncorrectFormatError() throws SQLException, IOException {
-        countBefore = countPayment();
+    void shouldReturnIncorrectFormatError() throws SQLException {
+        countBefore = Sql.countPayment();
         open(link);
         buyButton.shouldBe(visible).click();
         continueButton.click();
@@ -200,16 +61,13 @@ public class PurchaseTest {
         cvcIncorrect.shouldBe(visible);
         errorNotification.shouldNotBe(visible);
         successNotification.shouldNotBe(visible);
-        countAfter = countPayment();
-        if (countAfter != countBefore) {
-            throw new IOException("Unexpected addition of new rows to the database" +
-                    "|| Неожиданное появление новых строк в БД.");
-        }
+        countAfter = Sql.countPayment();
+        assertEquals(countBefore, countAfter);
     }
 
     @Test
-    void shouldReturnIncorrectFormatError_credit() throws SQLException, IOException {
-        countBefore = countCredit();
+    void shouldReturnIncorrectFormatError_credit() throws SQLException {
+        countBefore = Sql.countCredit();
         open(link);
         buyButton.shouldBe(visible).click();
         continueButton.click();
@@ -220,16 +78,13 @@ public class PurchaseTest {
         cvcIncorrect.shouldBe(visible);
         errorNotification.shouldNotBe(visible);
         successNotification.shouldNotBe(visible);
-        countAfter = countCredit();
-        if (countAfter != countBefore) {
-            throw new IOException("Unexpected addition of new rows to the database" +
-                    "|| Неожиданное появление новых строк в БД.");
-        }
+        countAfter = Sql.countCredit();
+        assertEquals(countBefore, countAfter);
     }
 
     @Test
-    void shouldReturnSuccessNotification() throws SQLException, IOException {
-        countBefore = countApprovedPayment();
+    void shouldReturnSuccessNotification() throws SQLException {
+        countBefore = Sql.countApprovedPayment();
         val faker = new Faker(new Locale("ja"));
         open(link);
         buyButton.shouldBe(visible).click();
@@ -241,16 +96,13 @@ public class PurchaseTest {
         continueButton.click();
         successNotification.waitUntil(visible,10000);
         errorNotification.shouldNotBe(visible);
-        countAfter = countApprovedPayment();
-        if (countAfter != countBefore + 1) {
-            throw new IOException("An unexpected lack of new rows in the database" +
-                    "|| Отсутствуют новые строки в БД.");
-        }
+        countAfter = Sql.countApprovedPayment();
+        assertEquals(countBefore+1, countAfter);
     }
 
     @Test
-    void shouldReturnErrorNotification() throws SQLException, IOException {
-        countBefore = countDeclinedPayment();
+    void shouldReturnErrorNotification() throws SQLException {
+        countBefore = Sql.countDeclinedPayment();
         val faker = new Faker(new Locale("ru"));
         open(link);
         buyButton.shouldBe(visible).click();
@@ -262,16 +114,13 @@ public class PurchaseTest {
         continueButton.click();
         errorNotification.waitUntil(visible,10000);
         successNotification.shouldNotBe(visible);
-        countAfter = countDeclinedPayment();
-        if (countAfter != countBefore + 1) {
-            throw new IOException("An unexpected lack of new rows in the database" +
-                    "|| Отсутствуют новые строки в БД.");
-        }
+        countAfter = Sql.countDeclinedPayment();
+        assertEquals(countBefore+1, countAfter);
     }
 
     @Test
-    void shouldReturnErrorNotification_randomCard() throws SQLException, IOException {
-        countBefore = countDeclinedPayment();
+    void shouldReturnErrorNotification_randomCard() throws SQLException {
+        countBefore = Sql.countDeclinedPayment();
         val faker = new Faker(new Locale("fr"));
         open(link);
         buyButton.shouldBe(visible).click();
@@ -284,16 +133,13 @@ public class PurchaseTest {
         continueButton.click();
         errorNotification.waitUntil(visible,10000);
         successNotification.shouldNotBe(visible);
-        countAfter = countDeclinedPayment();
-        if (countAfter != countBefore + 1) {
-            throw new IOException("An unexpected lack of new rows in the database" +
-                    "|| Отсутствуют новые строки в БД.");
-        }
+        countAfter = Sql.countDeclinedPayment();
+        assertEquals(countBefore+1, countAfter);
     }
 
     @Test
-    void shouldReturnErrorValidity() throws SQLException, IOException {
-        countBefore = countPayment();
+    void shouldReturnErrorValidity() throws SQLException {
+        countBefore = Sql.countPayment();
         val faker = new Faker(new Locale("ko"));
         open(link);
         buyButton.shouldBe(visible).click();
@@ -307,16 +153,13 @@ public class PurchaseTest {
         yearError.shouldBe(visible);
         errorNotification.shouldNotBe(visible);
         successNotification.shouldNotBe(visible);
-        countAfter = countPayment();
-        if (countAfter != countBefore) {
-            throw new IOException("Unexpected addition of new rows to the database" +
-                    "|| Неожиданное появление новых строк в БД.");
-        }
+        countAfter = Sql.countPayment();
+        assertEquals(countBefore, countAfter);
     }
 
     @Test
-    void shouldReturnSuccessNotification_credit() throws SQLException, IOException {
-        countBefore = countApprovedCredit();
+    void shouldReturnSuccessNotification_credit() throws SQLException {
+        countBefore = Sql.countApprovedCredit();
         val faker = new Faker(new Locale("ja"));
         open(link);
         creditBuyButton.shouldBe(visible).click();
@@ -328,16 +171,13 @@ public class PurchaseTest {
         continueButton.click();
         successNotification.waitUntil(visible,10000);
         errorNotification.shouldNotBe(visible);
-        countAfter = countApprovedCredit();
-        if (countAfter != countBefore + 1) {
-            throw new IOException("An unexpected lack of new rows in the database" +
-                    "|| Отсутствуют новые строки в БД.");
-        }
+        countAfter = Sql.countApprovedCredit();
+        assertEquals(countBefore+1, countAfter);
     }
 
     @Test
-    void shouldReturnErrorNotification_credit() throws SQLException, IOException {
-        countBefore = countDeclinedCredit();
+    void shouldReturnErrorNotification_credit() throws SQLException {
+        countBefore = Sql.countDeclinedCredit();
         val faker = new Faker(new Locale("ru"));
         open(link);
         creditBuyButton.shouldBe(visible).click();
@@ -349,16 +189,13 @@ public class PurchaseTest {
         continueButton.click();
         errorNotification.waitUntil(visible,10000);
         successNotification.shouldNotBe(visible);
-        countAfter = countDeclinedCredit();
-        if (countAfter != countBefore + 1) {
-            throw new IOException("An unexpected lack of new rows in the database" +
-                    "|| Отсутствуют новые строки в БД.");
-        }
+        countAfter = Sql.countDeclinedCredit();
+        assertEquals(countBefore+1, countAfter);
     }
 
     @Test
-    void shouldReturnErrorNotification_randomCard_credit() throws SQLException, IOException {
-        countBefore = countDeclinedCredit();
+    void shouldReturnErrorNotification_randomCard_credit() throws SQLException {
+        countBefore = Sql.countDeclinedCredit();
         val faker = new Faker(new Locale("fr"));
         open(link);
         creditBuyButton.shouldBe(visible).click();
@@ -371,16 +208,13 @@ public class PurchaseTest {
         continueButton.click();
         errorNotification.waitUntil(visible,10000);
         successNotification.shouldNotBe(visible);
-        countAfter = countDeclinedCredit();
-        if (countAfter != countBefore + 1) {
-            throw new IOException("An unexpected lack of new rows in the database" +
-                    "|| Отсутствуют новые строки в БД.");
-        }
+        countAfter = Sql.countDeclinedCredit();
+        assertEquals(countBefore+1, countAfter);
     }
 
     @Test
-    void shouldReturnErrorValidity_credit() throws SQLException, IOException {
-        countBefore = countCredit();
+    void shouldReturnErrorValidity_credit() throws SQLException {
+        countBefore = Sql.countCredit();
         val faker = new Faker(new Locale("ko"));
         open(link);
         creditBuyButton.shouldBe(visible).click();
@@ -394,10 +228,7 @@ public class PurchaseTest {
         yearError.shouldBe(visible);
         errorNotification.shouldNotBe(visible);
         successNotification.shouldNotBe(visible);
-        countAfter = countCredit();
-        if (countAfter != countBefore) {
-            throw new IOException("Unexpected addition of new rows to the database" +
-                    "|| Неожиданное появление новых строк в БД.");
-        }
+        countAfter = Sql.countCredit();
+        assertEquals(countBefore, countAfter);
     }
 }
