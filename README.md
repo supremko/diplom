@@ -18,10 +18,12 @@
 
 4. Запустить контейнеры командой `docker-compose up -d`
 
-5. Выбрать на какой БД будет проходить тестирование: в **PurchaseTest.java** изменить значение переменной **database** на **mysql** или **postgres**, соответственно.
-
-6. Запустить SUT контейнер в отдельном окне терминала. При тестировании на mysql командой `java -jar aqa-shop.jar --spring.profiles.active=mysql`
+5. Запустить SUT контейнер в отдельном окне терминала. При тестировании на mysql командой `java -jar aqa-shop.jar --spring.profiles.active=mysql`
 При тестировании на postgres командой `java -jar aqa-shop.jar --spring.profiles.active=postgres`
 
-7. В третьем окне терминала запустить тесты командой **gradlew test** (для windows) или **./gradlew test** (для линукс)
+6. В третьем окне терминала запустить тесты. 
+Для запуска на mysql командой **gradlew test** (для windows) или **./gradlew test** (для линукс). Запуск на mysql установлен как дефолтный. 
+Для запуска на postgres командой **gradlew test -Ddb_url=jdbc:postgresql://localhost:5432/app
+** (для windows) или **./gradlew test -Ddb_url=jdbc:postgresql://localhost:5432/app
+** (для линукс). 
 
