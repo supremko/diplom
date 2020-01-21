@@ -3,12 +3,12 @@ import lombok.val;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class Sql {
-    private static String user = "app";
-    private static String password = "pass";
-    private static String mysql = "jdbc:mysql://localhost:3306/app";
-    private static String postgres = "jdbc:postgresql://localhost:5432/app";
-    private static String database = System.getProperty("db_url");
+public class SqlUtils {
+//    mysql = "jdbc:mysql://localhost:3306/app"
+//    postgres = "jdbc:postgresql://localhost:5432/app"
+    private static String user = System.getProperty("user");;
+    private static String password = System.getProperty("pass");;
+    private static String database = System.getProperty("dbUrl");
 
     static int countApprovedPayment() throws SQLException {
         val count = "select count(1) as rownum from order_entity o, payment_entity p where o.payment_id=p.transaction_id and p.status='APPROVED';";
