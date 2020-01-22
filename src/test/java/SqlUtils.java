@@ -10,7 +10,7 @@ public class SqlUtils {
     private static String password = System.getProperty("pass");;
     private static String database = System.getProperty("dbUrl");
 
-    static int countApprovedPayment() throws SQLException {
+    static int countApprovedPayment() {
         val count = "select count(1) as rownum from order_entity o, payment_entity p where o.payment_id=p.transaction_id and p.status='APPROVED';";
         int countApprovedPayment = 0;
         try (
@@ -21,12 +21,16 @@ public class SqlUtils {
                 while (rs.next()) {
                     countApprovedPayment = rs.getInt("rownum");
                 }
+            } catch (SQLException e) {
+                System.err.println("Невозможно получить значение rownum столбца");
             }
+        } catch (SQLException e) {
+            System.err.println("Невозможно подключить к БД");
         }
         return countApprovedPayment;
     }
 
-    static int countDeclinedPayment() throws SQLException {
+    static int countDeclinedPayment() {
         val count = "select count(1) as rownum from order_entity o, payment_entity p where o.payment_id=p.transaction_id and p.status='DECLINED';";
         int countDeclinedPayment = 0;
         try (
@@ -37,12 +41,16 @@ public class SqlUtils {
                 while (rs.next()) {
                     countDeclinedPayment = rs.getInt("rownum");
                 }
+            } catch (SQLException e) {
+                System.err.println("Невозможно получить значение rownum столбца");
             }
+        } catch (SQLException e) {
+            System.err.println("Невозможно подключить к БД");
         }
         return countDeclinedPayment;
     }
 
-    static int countPayment() throws SQLException {
+    static int countPayment() {
         val count = "select count(1) as rownum from order_entity o, payment_entity p where o.payment_id=p.transaction_id;";
         int countPayment = 0;
         try (
@@ -53,12 +61,16 @@ public class SqlUtils {
                 while (rs.next()) {
                     countPayment = rs.getInt("rownum");
                 }
+            } catch (SQLException e) {
+                System.err.println("Невозможно получить значение rownum столбца");
             }
+        } catch (SQLException e) {
+            System.err.println("Невозможно подключить к БД");
         }
         return countPayment;
     }
 
-    static int countApprovedCredit() throws SQLException {
+    static int countApprovedCredit() {
         val count = "select count(1) as rownum from order_entity o, credit_request_entity c where o.payment_id=c.bank_id and c.status='APPROVED';";
         int countApprovedCredit = 0;
         try (
@@ -69,12 +81,16 @@ public class SqlUtils {
                 while (rs.next()) {
                     countApprovedCredit = rs.getInt("rownum");
                 }
+            } catch (SQLException e) {
+                System.err.println("Невозможно получить значение rownum столбца");
             }
+        } catch (SQLException e) {
+            System.err.println("Невозможно подключить к БД");
         }
         return countApprovedCredit;
     }
 
-    static int countDeclinedCredit() throws SQLException {
+    static int countDeclinedCredit() {
         val count = "select count(1) as rownum from order_entity o, credit_request_entity c where o.payment_id=c.bank_id and c.status='DECLINED';";
         int countDeclinedCredit = 0;
         try (
@@ -85,12 +101,16 @@ public class SqlUtils {
                 while (rs.next()) {
                     countDeclinedCredit = rs.getInt("rownum");
                 }
+            } catch (SQLException e) {
+                System.err.println("Невозможно получить значение rownum столбца");
             }
+        } catch (SQLException e) {
+            System.err.println("Невозможно подключить к БД");
         }
         return countDeclinedCredit;
     }
 
-    static int countCredit() throws SQLException {
+    static int countCredit() {
         val count = "select count(1) as rownum from order_entity o, credit_request_entity c where o.payment_id=c.bank_id;";
         int countCredit = 0;
         try (
@@ -101,7 +121,11 @@ public class SqlUtils {
                 while (rs.next()) {
                     countCredit = rs.getInt("rownum");
                 }
+            } catch (SQLException e) {
+                System.err.println("Невозможно получить значение rownum столбца");
             }
+        } catch (SQLException e) {
+            System.err.println("Невозможно подключить к БД");
         }
         return countCredit;
     }

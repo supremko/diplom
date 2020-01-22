@@ -23,7 +23,11 @@
 
 6. В третьем окне терминала запустить тесты. 
 Для запуска на mysql командой **gradlew test** (для windows) или **./gradlew test** (для линукс). Запуск на mysql установлен как дефолтный. 
-Для запуска на postgres командой **gradlew test -Ddb_url=jdbc:postgresql://localhost:5432/app
-** (для windows) или **./gradlew test -Ddb_url=jdbc:postgresql://localhost:5432/app
+Для запуска на postgres командой **gradlew test -DdbUrl=jdbc:postgresql://localhost:5432/app
+** (для windows) или **./gradlew test -DdbUrl=jdbc:postgresql://localhost:5432/app
 ** (для линукс). 
+
+7. Дополнительно можно передать логин и пароль, добавив `-Duser=_user_` и `-Dpass=_pass_`, например **./gradlew test -Duser=_user_ -Dpass=_pass_**. Стандартные логин\пароль - app\pass.
+
+8. Если вы хотите изменить страницу, на которой производятся тесты, дополнительно добавьте к **gradlew test** аттрибут **-Durl=_url_**
 

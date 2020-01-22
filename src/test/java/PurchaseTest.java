@@ -6,7 +6,7 @@ import static com.codeborne.selenide.Selenide.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PurchaseTest {
-    private String link = "http://localhost:8080";
+    private String link = System.getProperty("url");;
     private int countBefore;
     private int countAfter;
     PageElements elements = new PageElements();
