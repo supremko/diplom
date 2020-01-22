@@ -1,7 +1,5 @@
 import org.junit.jupiter.api.*;
 
-import java.sql.SQLException;
-
 import static com.codeborne.selenide.Selenide.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,136 +13,136 @@ public class PurchaseTest {
 
 
     @Test
-    void shouldReturnIncorrectFormatError() throws SQLException {
+    void shouldReturnIncorrectFormatError() {
         elements = new PageElements();
         countBefore = SqlUtils.countPayment();
         open(link);
-        elements.buyButtonClick();
-        elements.continueButtonClick();
-        elements.allFieldsVisible();
+        elements.buyButtonClick()
+                .continueButtonClick()
+                .allFieldsVisible();
         countAfter = SqlUtils.countPayment();
         assertEquals(countBefore, countAfter);
     }
 
     @Test
-    void shouldReturnIncorrectFormatError_credit() throws SQLException {
+    void shouldReturnIncorrectFormatError_credit() {
         countBefore = SqlUtils.countCredit();
         open(link);
-        elements.buyButtonClick();
-        elements.continueButtonClick();
-        elements.allFieldsVisible();
+        elements.buyButtonClick()
+                .continueButtonClick()
+                .allFieldsVisible();
         countAfter = SqlUtils.countCredit();
         assertEquals(countBefore, countAfter);
     }
 
     @Test
-    void shouldReturnSuccessNotification() throws SQLException {
+    void shouldReturnSuccessNotification() {
         countBefore = SqlUtils.countApprovedPayment();
         open(link);
-        elements.buyButtonClick();
-        elements.cardOneInput(listCards);
-        elements.validMonthAndYearInput(monthAndYear);
-        elements.fakerNameAndCvcInput();
-        elements.continueButtonClick();
-        elements.successNotificationVisible();
+        elements.buyButtonClick()
+                .cardOneInput(listCards)
+                .validMonthAndYearInput(monthAndYear)
+                .fakerNameAndCvcInput()
+                .continueButtonClick()
+                .successNotificationVisible();
         countAfter = SqlUtils.countApprovedPayment();
         assertEquals(countBefore+1, countAfter);
     }
 
     @Test
-    void shouldReturnErrorNotification() throws SQLException {
+    void shouldReturnErrorNotification() {
         countBefore = SqlUtils.countDeclinedPayment();
         open(link);
-        elements.buyButtonClick();
-        elements.cardTwoInput(listCards);
-        elements.validMonthAndYearInput(monthAndYear);
-        elements.fakerNameAndCvcInput();
-        elements.continueButtonClick();
-        elements.errorNotificationVisible();
+        elements.buyButtonClick()
+                .cardTwoInput(listCards)
+                .validMonthAndYearInput(monthAndYear)
+                .fakerNameAndCvcInput()
+                .continueButtonClick()
+                .errorNotificationVisible();
         countAfter = SqlUtils.countDeclinedPayment();
         assertEquals(countBefore+1, countAfter);
     }
 
     @Test
-    void shouldReturnErrorNotification_randomCard() throws SQLException {
+    void shouldReturnErrorNotification_randomCard() {
         countBefore = SqlUtils.countDeclinedPayment();
         open(link);
-        elements.buyButtonClick();
-        elements.fakerCardInput();
-        elements.validMonthAndYearInput(monthAndYear);
-        elements.fakerNameAndCvcInput();
-        elements.continueButtonClick();
-        elements.errorNotificationVisible();
+        elements.buyButtonClick()
+                .fakerCardInput()
+                .validMonthAndYearInput(monthAndYear)
+                .fakerNameAndCvcInput()
+                .continueButtonClick()
+                .errorNotificationVisible();
         countAfter = SqlUtils.countDeclinedPayment();
         assertEquals(countBefore+1, countAfter);
     }
 
     @Test
-    void shouldReturnErrorValidity() throws SQLException {
+    void shouldReturnErrorValidity() {
         countBefore = SqlUtils.countPayment();
         open(link);
-        elements.buyButtonClick();
-        elements.cardTwoInput(listCards);
-        elements.invalidMonthAndYearInput(monthAndYear);
-        elements.fakerNameAndCvcInput();
-        elements.continueButtonClick();
-        elements.monthAndYearError();
+        elements.buyButtonClick()
+                .cardTwoInput(listCards)
+                .invalidMonthAndYearInput(monthAndYear)
+                .fakerNameAndCvcInput()
+                .continueButtonClick()
+                .monthAndYearError();
         countAfter = SqlUtils.countPayment();
         assertEquals(countBefore, countAfter);
     }
 
     @Test
-    void shouldReturnSuccessNotification_credit() throws SQLException {
+    void shouldReturnSuccessNotification_credit() {
         countBefore = SqlUtils.countApprovedCredit();
         open(link);
-        elements.creditBuyButtonClick();
-        elements.cardOneInput(listCards);
-        elements.validMonthAndYearInput(monthAndYear);
-        elements.fakerNameAndCvcInput();
-        elements.continueButtonClick();
-        elements.successNotificationVisible();
+        elements.creditBuyButtonClick()
+                .cardOneInput(listCards)
+                .validMonthAndYearInput(monthAndYear)
+                .fakerNameAndCvcInput()
+                .continueButtonClick()
+                .successNotificationVisible();
         countAfter = SqlUtils.countApprovedCredit();
         assertEquals(countBefore+1, countAfter);
     }
 
     @Test
-    void shouldReturnErrorNotification_credit() throws SQLException {
+    void shouldReturnErrorNotification_credit() {
         countBefore = SqlUtils.countDeclinedCredit();
         open(link);
-        elements.creditBuyButtonClick();
-        elements.cardTwoInput(listCards);
-        elements.validMonthAndYearInput(monthAndYear);
-        elements.fakerNameAndCvcInput();
-        elements.continueButtonClick();
-        elements.errorNotificationVisible();
+        elements.creditBuyButtonClick()
+                .cardTwoInput(listCards)
+                .validMonthAndYearInput(monthAndYear)
+                .fakerNameAndCvcInput()
+                .continueButtonClick()
+                .errorNotificationVisible();
         countAfter = SqlUtils.countDeclinedCredit();
         assertEquals(countBefore+1, countAfter);
     }
 
     @Test
-    void shouldReturnErrorNotification_randomCard_credit() throws SQLException {
+    void shouldReturnErrorNotification_randomCard_credit(){
         countBefore = SqlUtils.countDeclinedCredit();
         open(link);
-        elements.creditBuyButtonClick();
-        elements.fakerCardInput();
-        elements.validMonthAndYearInput(monthAndYear);
-        elements.fakerNameAndCvcInput();
-        elements.continueButtonClick();
-        elements.errorNotificationVisible();
+        elements.creditBuyButtonClick()
+                .fakerCardInput()
+                .validMonthAndYearInput(monthAndYear)
+                .fakerNameAndCvcInput()
+                .continueButtonClick()
+                .errorNotificationVisible();
         countAfter = SqlUtils.countDeclinedCredit();
         assertEquals(countBefore+1, countAfter);
     }
 
     @Test
-    void shouldReturnErrorValidity_credit() throws SQLException {
+    void shouldReturnErrorValidity_credit(){
         countBefore = SqlUtils.countCredit();
         open(link);
-        elements.creditBuyButtonClick();
-
-        elements.invalidMonthAndYearInput(monthAndYear);
-        elements.fakerNameAndCvcInput();
-        elements.continueButtonClick();
-        elements.monthAndYearError();
+        elements.creditBuyButtonClick()
+                .cardTwoInput(listCards)
+                .invalidMonthAndYearInput(monthAndYear)
+                .fakerNameAndCvcInput()
+                .continueButtonClick()
+                .monthAndYearError();
         countAfter = SqlUtils.countCredit();
         assertEquals(countBefore, countAfter);
     }

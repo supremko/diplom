@@ -31,4 +31,5 @@ test {
     systemProperty 'user', System.getProperty('user', 'app')
     systemProperty 'pass', System.getProperty('pass', 'pass')
     systemProperty 'url', System.getProperty('url', 'http://localhost:8080')
+    systemProperty 'selenide.headless', System.getProperty('selenide.headless', 'true')
 }

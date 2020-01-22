@@ -36,7 +36,7 @@ public class PageElements {
             .$(withText("Неверный формат"));
 
 
-    public void allFieldsVisible() {
+    public PageElements allFieldsVisible() {
         cardIncorrect.shouldBe(visible);
         monthIncorrect.shouldBe(visible);
         yearIncorrect.shouldBe(visible);
@@ -44,64 +44,77 @@ public class PageElements {
         cvcIncorrect.shouldBe(visible);
         errorNotification.shouldNotBe(visible);
         successNotification.shouldNotBe(visible);
+        return this;
     }
 
-    public void validMonthAndYearInput(Data.MonthAndYear monthAndYear) {
+    public PageElements validMonthAndYearInput(Data.MonthAndYear monthAndYear) {
         monthInput.setValue(monthAndYear.getValidMonth());
         yearInput.setValue(monthAndYear.getValidYear());
+        return this;
     }
 
-    public void invalidMonthAndYearInput(Data.MonthAndYear monthAndYear) {
+    public PageElements invalidMonthAndYearInput(Data.MonthAndYear monthAndYear) {
         monthInput.setValue(monthAndYear.getInvalidMonth());
         yearInput.setValue(monthAndYear.getInvalidYear());
+        return this;
     }
 
-    public void continueButtonClick() {
+    public PageElements continueButtonClick() {
         continueButton.click();
+        return this;
     }
 
-    public void successNotificationVisible() {
+    public PageElements successNotificationVisible() {
         successNotification.waitUntil(visible,10000);
         errorNotification.shouldNotBe(visible);
+        return this;
     }
 
-    public void errorNotificationVisible() {
+    public PageElements errorNotificationVisible() {
         errorNotification.waitUntil(visible,10000);
         successNotification.shouldNotBe(visible);
+        return this;
     }
 
-    public void monthAndYearError() {
+    public PageElements monthAndYearError() {
         monthError.shouldBe(visible);
         yearError.shouldBe(visible);
         errorNotification.shouldNotBe(visible);
         successNotification.shouldNotBe(visible);
+        return this;
     }
 
-    public void fakerNameAndCvcInput() {
+    public PageElements fakerNameAndCvcInput() {
         val faker = new Faker(new Locale("ru"));
         nameInput.setValue(faker.name().fullName());
         cvcInput.setValue(faker.numerify("###"));
+        return this;
     }
 
-    public void buyButtonClick() {
+    public PageElements buyButtonClick() {
         buyButton.shouldBe(visible).click();
+        return this;
     }
 
-    public void creditBuyButtonClick() {
+    public PageElements creditBuyButtonClick() {
         creditBuyButton.shouldBe(visible).click();
+        return this;
     }
 
-    public void cardOneInput(Data.ListCards listCards) {
+    public PageElements cardOneInput(Data.ListCards listCards) {
         cardInput.waitUntil(visible,1000).setValue(listCards.getCard1());
+        return this;
     }
 
-    public void cardTwoInput(Data.ListCards listCards) {
+    public PageElements cardTwoInput(Data.ListCards listCards) {
         cardInput.waitUntil(visible,1000).setValue(listCards.getCard2());
+        return this;
     }
 
-    public void fakerCardInput() {
+    public PageElements fakerCardInput() {
         val faker = new Faker();
         cardInput.waitUntil(visible,1000)
                 .setValue(faker.numerify("#### #### #### ####"));
+        return this;
     }
 }
