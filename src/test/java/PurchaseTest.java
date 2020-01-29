@@ -54,7 +54,7 @@ public class PurchaseTest {
     }
 
     @Test
-    @DisplayName("Проверка отображения подтверждения в проведении опреции в меню купить")
+    @DisplayName("Проверка отображения подтверждения в проведении операции в меню купить")
     void shouldReturnSuccessNotification() {
         countBefore = SqlUtils.countApprovedPayment();
         open(link);
@@ -114,7 +114,7 @@ public class PurchaseTest {
     }
 
     @Test
-    @DisplayName("Проверка отображения подтверждения в проведении опреции в меню купить в кредит")
+    @DisplayName("Проверка отображения подтверждения в проведении операции в меню купить в кредит")
     void shouldReturnSuccessNotification_credit() {
         countBefore = SqlUtils.countApprovedCredit();
         open(link);
