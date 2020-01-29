@@ -9,9 +9,9 @@ public class PurchaseTest {
     private static String link;;
     private int countBefore;
     private int countAfter;
-    static PageElements elements;
-    static Data.MonthAndYear monthAndYear;
-    static Data.ListCards listCards;
+    private static PageElements elements;
+    private static Data.MonthAndYear monthAndYear;
+    private static Data.ListCards listCards;
 
     @BeforeAll
     static void init() {
@@ -30,6 +30,7 @@ public class PurchaseTest {
     }
 
     @Test
+    @DisplayName("Проверка отображения ошибки некорректного формата ввода в меню купить")
     void shouldReturnIncorrectFormatError() {
         countBefore = SqlUtils.countPayment();
         open(link);
@@ -41,6 +42,7 @@ public class PurchaseTest {
     }
 
     @Test
+    @DisplayName("Проверка отображения ошибки некорректного формата ввода в меню купить в кредит")
     void shouldReturnIncorrectFormatError_credit() {
         countBefore = SqlUtils.countCredit();
         open(link);
@@ -52,6 +54,7 @@ public class PurchaseTest {
     }
 
     @Test
+    @DisplayName("Проверка отображения подтверждения в проведении опреции в меню купить")
     void shouldReturnSuccessNotification() {
         countBefore = SqlUtils.countApprovedPayment();
         open(link);
@@ -66,6 +69,7 @@ public class PurchaseTest {
     }
 
     @Test
+    @DisplayName("Проверка отображения отказа в проведении операции в меню купить")
     void shouldReturnErrorNotification() {
         countBefore = SqlUtils.countDeclinedPayment();
         open(link);
@@ -80,6 +84,7 @@ public class PurchaseTest {
     }
 
     @Test
+    @DisplayName("Проверка отображения отказа в проведении операции со случайной картой в меню купить")
     void shouldReturnErrorNotification_randomCard() {
         countBefore = SqlUtils.countDeclinedPayment();
         open(link);
@@ -94,6 +99,7 @@ public class PurchaseTest {
     }
 
     @Test
+    @DisplayName("Проверка отображения ошибки валидности полей в меню купить")
     void shouldReturnErrorValidity() {
         countBefore = SqlUtils.countPayment();
         open(link);
@@ -108,6 +114,7 @@ public class PurchaseTest {
     }
 
     @Test
+    @DisplayName("Проверка отображения подтверждения в проведении опреции в меню купить в кредит")
     void shouldReturnSuccessNotification_credit() {
         countBefore = SqlUtils.countApprovedCredit();
         open(link);
@@ -122,6 +129,7 @@ public class PurchaseTest {
     }
 
     @Test
+    @DisplayName("Проверка отображения отказа в проведении операции в меню купить в кредит")
     void shouldReturnErrorNotification_credit() {
         countBefore = SqlUtils.countDeclinedCredit();
         open(link);
@@ -136,6 +144,7 @@ public class PurchaseTest {
     }
 
     @Test
+    @DisplayName("Проверка отображения отказа в проведении операции со случайной картой в меню купить в кредит")
     void shouldReturnErrorNotification_randomCard_credit(){
         countBefore = SqlUtils.countDeclinedCredit();
         open(link);
@@ -150,6 +159,7 @@ public class PurchaseTest {
     }
 
     @Test
+    @DisplayName("Проверка отображения ошибки валидности полей в меню купить в кредит")
     void shouldReturnErrorValidity_credit(){
         countBefore = SqlUtils.countCredit();
         open(link);
